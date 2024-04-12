@@ -63,9 +63,13 @@ class RNAudioRecorderPlayerModule(private val reactContext: ReactApplicationCont
         audioFileURL = if (((path == "DEFAULT"))) "${reactContext.cacheDir}/$defaultFileName" else path
         _meteringEnabled = meteringEnabled
 
+        Log.d(tag, "Creating media recorder");
+
         if (mediaRecorder == null) {
             mediaRecorder = MediaRecorder()
         }
+
+        Log.d(tag, "Created media recorder");
 
         if (audioSet != null) {
             mediaRecorder!!.setAudioSource(if (audioSet.hasKey("AudioSourceAndroid")) audioSet.getInt("AudioSourceAndroid") else MediaRecorder.AudioSource.MIC)
@@ -81,8 +85,11 @@ class RNAudioRecorderPlayerModule(private val reactContext: ReactApplicationCont
             mediaRecorder!!.setAudioEncodingBitRate(128000)
             mediaRecorder!!.setAudioSamplingRate(48000)
         }
-        mediaRecorder!!.setOutputFile(audioFileURL)
 
+        Log.d(tag, "Setting output file");
+        mediaRecorder!!.setOutputFile(audioFileURL)
+        Log.d(tag, "Set output file");
+        
         try {
             mediaRecorder!!.prepare()
             totalPausedRecordTime = 0L
